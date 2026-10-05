@@ -58,6 +58,76 @@ button, input {
   margin: 4px 6px 4px 0;
 }
 .err { color: #b42318; }
+.ok { color: #2e7d4f; }
 .hint { color: #6b5a48; font-size: 0.92em; }
 label { display: block; margin: 8px 0; }
 .topbar { display: flex; justify-content: space-between; align-items: baseline; }
+
+.shell { max-width: 920px; margin: 0 auto; padding: 16px 20px 60px; }
+.topnav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 2px solid #e6d5a5;
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+}
+.topnav button.active {
+  background: var(--gold);
+  color: #fff;
+  border-color: var(--gold);
+}
+.topnav .who { margin-left: auto; color: #6b5a48; font-size: 0.92em; }
+.topnav .logout { margin-left: 8px; }
+
+.basin.stopped { box-shadow: 0 0 0 4px rgba(180, 35, 24, 0.45); }
+.basin .seal {
+  margin-top: 2px;
+  font-size: 12px;
+  background: #b42318;
+  border-radius: 4px;
+  padding: 0 6px;
+}
+.stop-tag {
+  display: inline-block;
+  font-size: 0.82em;
+  border: 1px solid #c9a227;
+  border-radius: 6px;
+  padding: 1px 8px;
+  margin-left: 8px;
+  color: #7a5b00;
+  background: #fdf3d0;
+}
+.stop-tag.passed {
+  border-color: #b42318;
+  color: #b42318;
+  background: #fde8e6;
+}
+
+.page h1 { margin-bottom: 4px; }
+.toolbar { margin: 12px 0; }
+.toolbar label { display: inline-flex; align-items: center; gap: 8px; }
+.paste-card {
+  background: #fff;
+  border: 1px dashed #c9a227;
+  border-radius: 12px;
+  padding: 12px 18px;
+  margin: 12px 0;
+  max-width: 520px;
+}
+.paste-card label { display: flex; align-items: center; gap: 10px; }
+.paste-card h3 { margin: 4px 0; }
+.sticker-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.sticker-table th, .sticker-table td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid #eee4cf;
+}
+.sticker-table tr.voided td { color: #9a8e7d; text-decoration: line-through; }
+.sticker-table tr.voided .stop-tag { text-decoration: none; }

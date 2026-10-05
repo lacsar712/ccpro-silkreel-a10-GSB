@@ -1,6 +1,17 @@
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 
-from sqlalchemy import DateTime, Float, ForeignKey, Integer, String, Text, UniqueConstraint
+from sqlalchemy import (
+    Date,
+    DateTime,
+    Float,
+    ForeignKey,
+    Index,
+    Integer,
+    String,
+    Text,
+    UniqueConstraint,
+    text,
+)
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
@@ -46,6 +57,7 @@ class Basin(Base):
     notes: Mapped[str] = mapped_column(Text, default="")
     filature: Mapped[Filature] = relationship(back_populates="basins")
     readings: Mapped[list["BathReading"]] = relationship(back_populates="basin")
+    stickers: Mapped[list["StopDateSticker"]] = relationship(back_populates="basin")
 
 
 class BathReading(Base):
@@ -57,3 +69,28 @@ class BathReading(Base):
     water_temp_c: Mapped[float] = mapped_column(Float)
     operator: Mapped[str] = mapped_column(String(64), default="")
     basin: Mapped[Basin] = relationship(back_populates="readings")
+
+
+class StopDateSticker(Base):
+    """停缫止日贴纸：每盆至多一张未作废；服务器自然日晚于止日后禁登汤温。"""
+
+    __tablename__ = "stop_date_stickers"
+    __table_args__ = (
+        Index(
+            "uq_stop_sticker_one_active_per_basin",
+            "basin_id",
+            unique=True,
+            postgresql_where=text("voided_at IS NULL"),
+            sqlite_where=text("voided_at IS NULL"),
+        ),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    basin_id: Mapped[int] = mapped_column(ForeignKey("basins.id"))
+    stop_date: Mapped[date] = mapped_column(Date)
+    issued_by: Mapped[str] = mapped_column(String(64))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+    voided_at: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True), nullable=True, default=None
+    )
+    basin: Mapped[Basin] = relationship(back_populates="stickers")
